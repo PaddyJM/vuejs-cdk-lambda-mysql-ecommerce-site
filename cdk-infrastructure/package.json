@@ -9,7 +9,10 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy:local": "cdklocal deploy"
+    "deploy:local": "cdklocal deploy",
+    "bootstrap:local": "bash ./scripts/isBootstrapped.sh",
+    "localstack": "docker-compose up -d",
+    "local": "yarn run localstack && yarn run bootstrap:local && yarn run deploy:local"
   },
   "devDependencies": {
     "@types/jest": "^28.1.1",
