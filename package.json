@@ -1,0 +1,15 @@
+{
+  "name": "vuejs-cdk-lambda-mysql-ecommerce-site",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:PaddyJM/vuejs-cdk-lambda-mysql-ecommerce-site.git",
+  "author": "Patrick Morton <patrickjamesmorton@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "aws-lambda": "^1.0.7"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.100",
+    "typescript": "^4.7.3"
+  }
+}

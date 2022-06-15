@@ -1,16 +1,37 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { Stack, StackProps } from 'aws-cdk-lib'
+import { Construct } from 'constructs'
+import * as cdk from 'aws-cdk-lib'
+import * as path from "path"
 
 export class CdkInfrastructureStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
-    super(scope, id, props);
+    super(scope, id, props)
 
-    // The code that defines your stack goes here
+      const api = new cdk.aws_apigateway.RestApi(this, "apigw", {
+      defaultCorsPreflightOptions: {
+        allowHeaders: [
+          "Content-Type",
+          "X-Amz-Date",
+          "Authorization",
+          "X-Api-Key",
+        ],
+        allowMethods: ["OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE"],
+        allowCredentials: true,
+        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
+      },
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'CdkInfrastructureQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const lambda = new cdk.aws_lambda_nodejs.NodejsFunction(this, 'lambda', {
+      runtime: cdk.aws_lambda.Runtime.NODEJS_14_X,
+      handler: 'main',
+      entry: path.join(__dirname, './lambda/index.ts'),
+    })
+
+    const resource = api.root.addResource("helloWorld");
+
+     resource.addMethod(
+      "GET",
+      new cdk.aws_apigateway.LambdaIntegration(lambda, { proxy: true })
+    );
   }
 }
